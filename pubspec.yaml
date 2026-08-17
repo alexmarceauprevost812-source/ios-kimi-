@@ -1,5 +1,5 @@
 name: ios_kimi
-description: "Client Kimi (Moonshot AI) multiplateforme — iOS, Android et plus."
+description: "Client Kimi (Moonshot AI) open source et multiplateforme — iOS, Android et plus."
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -20,3 +20,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/mascot.gif

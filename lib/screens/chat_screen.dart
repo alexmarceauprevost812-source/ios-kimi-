@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/chat_view_model.dart';
+import '../widgets/mascot_avatar.dart';
 import '../widgets/message_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -39,17 +40,27 @@ class _ChatScreenState extends State<ChatScreen> {
     final vm = context.watch<ChatViewModel>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Kimi')),
+      appBar: AppBar(
+        title: const Row(
+          children: [
+            MascotAvatar(size: 32),
+            SizedBox(width: 10),
+            Text('Kimi'),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(12),
-              itemCount: vm.messages.length,
-              itemBuilder: (context, i) =>
-                  MessageBubble(message: vm.messages[i]),
-            ),
+            child: vm.messages.isEmpty
+                ? const _Welcome()
+                : ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(12),
+                    itemCount: vm.messages.length,
+                    itemBuilder: (context, i) =>
+                        MessageBubble(message: vm.messages[i]),
+                  ),
           ),
           SafeArea(
             child: Padding(
@@ -87,6 +98,33 @@ class _ChatScreenState extends State<ChatScreen> {
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Écran d'accueil affiché quand il n'y a pas encore de messages.
+class _Welcome extends StatelessWidget {
+  const _Welcome();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const MascotAvatar(size: 120),
+          const SizedBox(height: 16),
+          Text(
+            'Salut ! Je suis Kimi.',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Pose-moi ta question pour commencer.',
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),
