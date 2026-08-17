@@ -17,6 +17,12 @@ class _ChatScreenState extends State<ChatScreen> {
   final _scrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    context.read<ChatViewModel>().refreshConversations();
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     _scrollController.dispose();
@@ -48,7 +54,15 @@ class _ChatScreenState extends State<ChatScreen> {
             Text('Kimi'),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add_comment_outlined),
+            tooltip: 'Nouvelle conversation',
+            onPressed: vm.newConversation,
+          ),
+        ],
       ),
+      drawer: const _HistoryDrawer(),
       body: Column(
         children: [
           Expanded(
@@ -100,6 +114,51 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Tiroir latéral : historique des conversations sauvegardées.
+class _HistoryDrawer extends StatelessWidget {
+  const _HistoryDrawer();
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<ChatViewModel>();
+
+    return Drawer(
+      child: SafeArea(
+        child: Column(
+          children: [
+            const ListTile(
+              leading: MascotAvatar(size: 36),
+              title: Text('Mes conversations'),
+            ),
+            const Divider(),
+            Expanded(
+              child: vm.conversations.isEmpty
+                  ? const Center(child: Text('Aucune conversation'))
+                  : ListView.builder(
+                      itemCount: vm.conversations.length,
+                      itemBuilder: (context, i) {
+                        final c = vm.conversations[i];
+                        return ListTile(
+                          title: Text(
+                            c['title'] as String,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            vm.openConversation(c['id'] as String);
+                          },
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }

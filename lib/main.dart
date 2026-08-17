@@ -8,11 +8,21 @@ import 'viewmodels/chat_view_model.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Remplace par tes valeurs Supabase (ou utilise --dart-define)
   await Supabase.initialize(
-    url: const String.fromEnvironment('SUPABASE_URL', defaultValue: ''),
-    anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY', defaultValue: ''),
+    url: const String.fromEnvironment(
+      'SUPABASE_URL',
+      defaultValue: 'https://mmjezzaxdrirxxwlbisb.supabase.co',
+    ),
+    anonKey: const String.fromEnvironment(
+      'SUPABASE_ANON_KEY',
+      defaultValue: 'sb_publishable_eNZI0YsMVC0vxKsoAwsOkA_PARzuIlG',
+    ),
   );
+
+  // Connexion anonyme : chaque appareil a son propre espace de données.
+  if (Supabase.instance.client.auth.currentSession == null) {
+    await Supabase.instance.client.auth.signInAnonymously();
+  }
 
   runApp(const KimiApp());
 }
