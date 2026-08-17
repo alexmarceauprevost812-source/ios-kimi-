@@ -11,11 +11,11 @@ Future<void> main() async {
   await Supabase.initialize(
     url: const String.fromEnvironment(
       'SUPABASE_URL',
-      defaultValue: 'https://mmjezzaxdrirxxwlbisb.supabase.co',
+      defaultValue: 'https://ckchoyjpyppfwvneylkv.supabase.co',
     ),
     anonKey: const String.fromEnvironment(
       'SUPABASE_ANON_KEY',
-      defaultValue: 'sb_publishable_eNZI0YsMVC0vxKsoAwsOkA_PARzuIlG',
+      defaultValue: 'sb_publishable_462buVgwumaavPfAydnACg_qhqJhkRP',
     ),
   );
 
